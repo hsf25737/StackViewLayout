@@ -36,7 +36,7 @@ public class StackViewLayout extends ViewGroup {
     private int stackSize = 3;
     private float aspectRatio = 0;
     private boolean autoPlay = true;
-    private boolean moveAble = false;//是否可滑动
+    private boolean moveAble = true;//是否可滑动
     private int stackModel = MODEL_RIGHT;
     private int edge = 10;
     private int paddingX = 10;
@@ -161,11 +161,16 @@ public class StackViewLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int size = getOffsetXSize();
+        int size = getOffsetXSize();// 4个
         boolean selected = false;
+        int count = adapter.getItemCount();
         for (int i = getChildCount(); i < size + 2 && size > 0; i++) {
-            int cnt = adapter.getItemCount();
-            int position = (current + size - i + cnt) % cnt;
+            int position;
+            if (count < stackSize && !moveAble) {//可触摸滑动时，数量少于stackSize。重复填充内容
+                position = current + size - i;
+            } else {
+                position = (current + size - i + count) % count;
+            }
             int viewType = adapter.getItemViewType(position);
             View child = adapter.onCreateView(this, viewType);
             addStackView(child, -1);
@@ -210,7 +215,7 @@ public class StackViewLayout extends ViewGroup {
     }
 
     private int getOffsetXSize() {
-        return null == adapter ? 0 : Math.min(adapter.getItemCount(), stackSize);
+        return null == adapter ? 0 : (adapter.getItemCount() < 4 ? 4 : stackSize);
     }
 
     /**

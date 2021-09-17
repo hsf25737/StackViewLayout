@@ -7,7 +7,7 @@
     stack:stackAspectRatio="0.5"
     stack:stackAutoPlay="false"
     stack:stackEdge="10dp"
-    stack:stackMoveable="false"
+    stack:stackMoveable="true"
     stack:stackModel="right"
     stack:stackOffsetX="2dp"
     stack:stackOffsetY="3dp"
